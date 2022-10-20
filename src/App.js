@@ -1,43 +1,53 @@
 import React, { Component } from 'react';
 
-import { getNewTimestamp } from './helpers/dateTimeHelpers';
-
 export default class App extends Component {
   constructor() {
     super();
 
     this.state = {
-      clickArray: [],
-    };
+      users: [],
+      showUsers: false,
+    }
   }
+  async componentDidMount() {
+    const res = await fetch(
+      'https://randomuser.me/api/?seed=rush&nst=br&results=10'
+    );
 
-  handleClick = () => {
-    const newClickArray = Object.assign([], this.state.clickArray);
-    newClickArray.push(getNewTimestamp());
+    const json = await res.json();
 
-    this.setState({ clickArray: newClickArray });
-  };
+    this.setState({
+      users: json.results,
+    });
+  }
 
   componentDidUpdate() {
-    document.title = this.state.clickArray.length.toString();
+    console.log('componentDidUpdate de App.js');
   }
 
+  componentDidWillUnMount() {
+    console.log('componentDidWillUnMoun de App.js');
+  }
+
+  handleShowUsers = (event) => {
+    this.setState({ showUsers: event.target.checked });
+  };
+
   render() {
-    const { clickArray } = this.state;
-    
+    const { showUsers } = this.state;
+
     return (
       <div>
-        <h1>
-          React e <em>Class Components</em>
-        </h1>
-
-        <button onClick={this.handleClick}>Clique Aqui</button>
-
-        <ul>{clickArray.map(item => {
-          return <li key={item}>{item}</li>;
-        })}
-        </ul>
+        <div className="switch">
+          <label>
+            Mostrar usuários:
+            <input type="checkbox" onChange={this.handleShowUsers} />
+            <span className="lever"></span>
+          </label>
+        </div>
+        <hr />
+       { showUsers && <div>Users</div>}
       </div>
-    );
+    )
   }
 }
