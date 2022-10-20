@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Toggle from './components/Toggle';
 import Users from './components/Users';
 
 export default class App extends Component {
@@ -22,16 +23,8 @@ export default class App extends Component {
     });
   }
 
-  componentDidUpdate() {
-    console.log('componentDidUpdate de App.js');
-  }
-
-  componentWillUnmount() {
-    console.log('componentWillUnmount de App.js');
-  }
-
-  handleShowUsers = (event) => {
-    this.setState({ showUsers: event.target.checked });
+  handleShowUsers = (isChecked) => {
+    this.setState({ showUsers: isChecked });
   };
 
   render() {
@@ -39,13 +32,12 @@ export default class App extends Component {
 
     return (
       <div>
-        <div className="switch">
-          <label>
-            Mostrar usuários:
-            <input type="checkbox" onChange={this.handleShowUsers} />
-            <span className="lever"></span>
-          </label>
-        </div>
+        <h3>React LifeCycle</h3>
+        <Toggle
+          description="Mostrar usuários:"
+          enabled={showUsers}
+          onToggle={this.handleShowUsers}
+        />
         <hr />
         {showUsers && <Users users={users} />}
       </div>
