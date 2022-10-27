@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Toggle(onToggle, enabled, description) {
+export default function Toggle({onToggle, enabled, description}) {
 
   const handleChange = (event) => {
     const isChecked = event.target.checked;
